@@ -1,19 +1,33 @@
-name: Get AWS Session Token
+name: Check AWS Credentials
 
 on:
-  workflow_dispatch:
-  # Add other events or triggers as needed
+  push:
+    branches:
+      - main
 
 jobs:
-  get-session-token:
+  check-aws-credentials:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-      
-    - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v4
-      with:
-        role-to-assume: arn:aws:iam::600764632321:role/MyPipelineTrustPolicyRole
-        aws-region: us-east-1
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::600764632321:role/MyPipelineTrustPolicyRole
+          aws-region: us-east-1
+
+      - name: Check AWS credentials
+        run: |
+          aws s3 ls
+          if [ $? -eq 0 ]; then
+            echo "AWS credentials are authorized."
+          else
+            echo "AWS credentials are NOT authorized."
+            exit 1
+          fi
+
+
+    
