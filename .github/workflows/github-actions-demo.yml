@@ -1,22 +1,19 @@
-  build:
+name: Get AWS Session Token
+
+on:
+  workflow_dispatch:
+  # Add other events or triggers as needed
+
+jobs:
+  get-session-token:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          role-to-assume: "${{ secrets.AWS_ASSUME_ROLE }}"
-          aws-region: "us-east-2"
-      - name: Setup ARM64 EC2
-        id: ec2-arm64
-        uses: truemark/aws-ec2-run-instance-action@v5
-        with:
-          security-group-id: "sg-05a30e50ae1b6e15b"
-          subnet-id: "subnet-0fa7a277e0f5bc1a7"
-          image-id: "default-arm64"
-          instance-type: "t2.micro"
-          region: "us-east-1"
-          user-data: |
-            #!/bin/bash
-            echo "Do something cool here"
+    - name: Checkout code
+      uses: actions/checkout@v2
+      
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: arn:aws:iam::600764632321:role/MyPipelineTrustPolicyRole
+        aws-region: us-east-1
