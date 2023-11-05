@@ -1,4 +1,4 @@
-name: Check AWS Credentials
+name: Deploy EC2 with Terraform
 
 on:
   push:
@@ -6,27 +6,32 @@ on:
       - main
 
 jobs:
-  check-aws-credentials:
+  deploy-ec2-instance:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up AWS CLI
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.0.7
+
+      - name: Set up AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
-      - name: Check AWS credentials
+      - name: Initialize Terraform
+        run: terraform init
+
+      - name: Deploy EC2 instance
         run: |
-          aws s3 ls
-          if [ $? -eq 0 ]; then
-            echo "AWS credentials are authorized."
-          else
-            echo "AWS credentials are NOT authorized."
-            exit 1
-          fi
+          # Optionally, you can set Terraform variables if needed
+          # terraform apply -var "variable_name=variable_value"
+
+          terraform apply -auto-approve
 
