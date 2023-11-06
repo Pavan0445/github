@@ -54,7 +54,7 @@ jobs:
           chmod 600 $key_path
 
           # SSH into your EC2 instance
-          ssh -i $key_path $ec2_user@$ec2_ip 'bash -s' << 'ENDSSH'
+          ssh -i $key_path -o StrictHostKeyChecking=no $ec2_user@$ec2_ip << 'ENDSSH'
             # Your script commands here
             # For example, you can add your script content here
             # Switch to the root user
