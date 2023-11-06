@@ -1,4 +1,4 @@
-/*provider "aws" {
+provider "aws" {
   region = "us-east-1" # Replace with your desired AWS region
 }
 
@@ -90,4 +90,4 @@ resource "aws_security_group_rule" "all_egress1" {
   protocol          = "-1"          # Allow all outbound traffic
   cidr_blocks       = ["0.0.0.0/0"] # Allow all outbound traffic
   security_group_id = aws_security_group.My_Monday_Task.id
-}*/
+}
