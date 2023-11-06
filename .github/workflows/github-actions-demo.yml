@@ -83,7 +83,7 @@ jobs:
 
       - name: Copy files to EC2
         run: |
-          scp -i ${{ secrets.YOUR_PEM_KEY_SECRET }} -r ./* ec2-user@your-ec2-instance-ip:/opt/lampp/htdocs
+          scp -i ${{ secrets.YOUR_PEM_KEY_SECRET }} -r ./* $ec2_user@$ec2_ip:/opt/lampp/htdocs
 
             # Additional commands
           ENDSSH
