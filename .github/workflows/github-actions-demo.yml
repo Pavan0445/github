@@ -31,6 +31,10 @@ jobs:
       - name: Deploy EC2 instance
         run: terraform apply -auto-approve
 
+      - name: Debug Terraform Output
+        run: |
+          terraform output -json ec2_public_ip
+
       - name: Fetch EC2 public IP
         id: fetch-ec2-ip
         run: |
