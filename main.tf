@@ -19,7 +19,7 @@ resource "aws_instance" "web_server" {
 }
 
 resource "aws_security_group" "My_Monday_Task" {
-  name        = "http-https-ssh-sg"
+  name        = "http-https-ssh-sg1"
   description = "Allow HTTP, HTTPS, and SSH traffic"
 }
 
