@@ -25,43 +25,12 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
-      - name: SSH into EC2
+      - name: Initialize Terraform
+        run: terraform init
+
+      - name: Deploy EC2 instance
         run: |
-          # SSH into your EC2 instance
-          ssh -o StrictHostKeyChecking=no -i ${{ secrets.YOUR_PEM_KEY_SECRET }} ec2-user@ec2-3-81-142-14.compute-1.amazonaws.com << 'ENDSSH'
-            # Your script commands here
-            # For example, you can add your script content here
-            # Switch to the root user
-            sudo su -
+          # Optionally, you can set Terraform variables if needed
+          # terraform apply -var "variable_name=variable_value"
 
-            # Update the package manager with automatic "yes" responses
-            yes | apt update
-
-            # Install expect with automatic "yes" responses
-            yes | apt-get install -y expect
-
-            # Download XAMPP installer
-            wget https://sourceforge.net/projects/xampp/files/XAMPP%20Linux/8.1.17/xampp-linux-x64-8.1.17-0-installer.run
-
-            # Make the installer executable
-            chmod +x xampp-linux-x64-8.1.17-0-installer.run
-
-            yes | ./xampp-linux-x64-8.1.17-0-installer.run
-
-            # Install netstat
-            yes | apt-get install -y net-tools
-
-            # Update the XAMPP configuration to allow access
-            sed -i 's/local/all granted/' /opt/lampp/etc/extra/httpd-xampp.conf
-
-            # Restart XAMPP
-            /opt/lampp/lampp restart
-
-            # Change to the XAMPP htdocs directory
-            cd /opt/lampp/htdocs
-          ENDSSH
-
-      - name: Copy files to EC2
-        run: |
-          scp -o StrictHostKeyChecking=no -i ${{ secrets.YOUR_PEM_KEY_SECRET }} -r ./* ec2-user@ec2-3-81-142-14.compute-1.amazonaws.com:/opt/lampp/htdocs
-
+          terraform apply -auto-approve
