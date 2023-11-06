@@ -32,13 +32,10 @@ jobs:
       - name: SSH into EC2
         run: |
           
-          key_path="./taskformonday.pem"
-    
           
-          chmod 600 $key_path
 
           # SSH into your EC2 instance
-          ssh -i $key_path ec2-3-81-142-14.compute-1.amazonaws.com << 'ENDSSH'
+          ssh -i "taskformonday.pem" ec2-3-81-142-14.compute-1.amazonaws.com << 'ENDSSH'
             # Your script commands here
             # For example, you can add your script content here
             # Switch to the root user
