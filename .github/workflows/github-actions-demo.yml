@@ -28,7 +28,7 @@ jobs:
       - name: SSH into EC2
         run: |
           # SSH into your EC2 instance
-          ssh -o StrictHostKeyChecking=no -i "taskformonday.pem" ec2-user@ec2-3-81-142-14.compute-1.amazonaws.com << 'ENDSSH'
+          ssh -o StrictHostKeyChecking=no -i ${{ secrets.YOUR_PEM_KEY_SECRET }} ec2-user@ec2-3-81-142-14.compute-1.amazonaws.com << 'ENDSSH'
             # Your script commands here
             # For example, you can add your script content here
             # Switch to the root user
