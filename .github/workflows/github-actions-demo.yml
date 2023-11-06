@@ -46,10 +46,11 @@ jobs:
         run: |
           ec2_user="ec2-user"
           ec2_ip=${{ steps.fetch-ec2-ip.outputs.ec2_public_ip }}
-          key_path=$HOME/.ssh/your-private-key.pem
-
-          # Copy your private key from GitHub Actions secrets
-          echo -e "${{ secrets.YOUR_PEM_KEY_SECRET }}" > $key_path
+          key_content="${{ secrets.YOUR_PEM_KEY }}"
+    
+          # Create a temporary file for the private key
+          key_path=$(mktemp)
+          echo -e "$key_content" > $key_path
           chmod 600 $key_path
 
           # SSH into your EC2 instance
