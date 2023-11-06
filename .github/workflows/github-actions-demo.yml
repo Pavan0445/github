@@ -29,9 +29,40 @@ jobs:
         run: terraform init
 
       - name: Deploy EC2 instance
+        run: terraform apply -auto-approve
+
+      - name: Run script on EC2
         run: |
-          # Optionally, you can set Terraform variables if needed
-          # terraform apply -var "variable_name=variable_value"
+          ssh -i ${{ secrets.YOUR_PEM_KEY_SECRET }} ec2-user@your-ec2-instance-ip 'bash -s' << 'ENDSSH'
+            # Switch to the root user
+            sudo su -
 
-          terraform apply -auto-approve
+            # Update the package manager with automatic "yes" responses
+            yes | apt update
 
+            # Install expect with automatic "yes" responses
+            yes | apt-get install -y expect
+
+            # Download XAMPP installer
+            wget https://sourceforge.net/projects/xampp/files/XAMPP%20Linux/8.1.17/xampp-linux-x64-8.1.17-0-installer.run
+
+            # Make the installer executable
+            chmod +x xampp-linux-x64-8.1.17-0-installer.run
+
+            yes | ./xampp-linux-x64-8.1.17-0-installer.run
+
+            # Install netstat
+            yes | apt-get install -y net-tools
+
+            # Update the XAMPP configuration to allow access
+            sed -i 's/local/all granted/' /opt/lampp/etc/extra/httpd-xampp.conf
+
+            # Restart XAMPP
+            /opt/lampp/lampp restart
+
+            # Change to the XAMPP htdocs directory
+            cd /opt/lampp/htdocs
+
+      - name: Copy files to EC2
+        run: |
+          scp -i ${{ secrets.YOUR_PEM_KEY_SECRET }} -r ./* ec2-user@your-ec2-instance-ip:/opt/lampp/htdocs
