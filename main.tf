@@ -58,3 +58,7 @@ resource "aws_security_group_rule" "all_egress2" {
   cidr_blocks       = ["0.0.0.0/0"] # Allow all outbound traffic
   security_group_id = aws_security_group.My_Monday_Task.id
 }
+
+output "ec2_public_ip" {
+  value = aws_instance.example.public_ip
+}
