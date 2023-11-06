@@ -56,7 +56,7 @@ resource "aws_security_group" "My_Monday_Task" {
   description = "Allow HTTP, HTTPS, and SSH traffic"
 }
 
-resource "aws_security_group_rule" "http_ingress" {
+resource "aws_security_group_rule" "http_ingress1" {
   type              = "ingress"
   from_port         = 80
   to_port           = 80
@@ -65,7 +65,7 @@ resource "aws_security_group_rule" "http_ingress" {
   security_group_id = aws_security_group.My_Monday_Task.id
 }
 
-resource "aws_security_group_rule" "https_ingress" {
+resource "aws_security_group_rule" "https_ingress1" {
   type              = "ingress"
   from_port         = 443
   to_port           = 443
@@ -74,7 +74,7 @@ resource "aws_security_group_rule" "https_ingress" {
   security_group_id = aws_security_group.My_Monday_Task.id
 }
 
-resource "aws_security_group_rule" "ssh_ingress" {
+resource "aws_security_group_rule" "ssh_ingress1" {
   type              = "ingress"
   from_port         = 22
   to_port           = 22
@@ -83,7 +83,7 @@ resource "aws_security_group_rule" "ssh_ingress" {
   security_group_id = aws_security_group.My_Monday_Task.id
 }
 
-resource "aws_security_group_rule" "all_egress" {
+resource "aws_security_group_rule" "all_egress1" {
   type              = "egress"
   from_port         = 0
   to_port           = 0
