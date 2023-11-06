@@ -12,40 +12,6 @@ resource "aws_instance" "web_server" {
     # Add more security group IDs if needed
   ]
 
-  user_data = <<-EOF
-    #!/bin/bash
-    # Switch to the root user
-    sudo su -
-
-    # Update the package manager with automatic "yes" responses
-    yes | apt update
-
-    # Install expect with automatic "yes" responses
-    yes | apt-get install -y expect
-
-    # Download XAMPP installer
-    wget https://sourceforge.net/projects/xampp/files/XAMPP%20Linux/8.1.17/xampp-linux-x64-8.1.17-0-installer.run
-
-    # Make the installer executable
-    chmod +x xampp-linux-x64-8.1.17-0-installer.run
-
-    yes | ./xampp-linux-x64-8.1.17-0-installer.run
-
-    # Install netstat
-    yes | apt-get install -y net-tools
-
-    # Update the XAMPP configuration to allow access
-    sed -i 's/local/all granted/' /opt/lampp/etc/extra/httpd-xampp.conf
-
-    # Restart XAMPP
-    /opt/lampp/lampp restart
-
-    # Change to the XAMPP htdocs directory
-    cd /opt/lampp/htdocs
-
-    # Clone a Git repository (replace URL with your repository)
-    git clone https://github.com/Pavan0445/TaskforMonday.git
-    EOF
 
   tags = {
     Name = "XAMPP-EC2"
@@ -57,7 +23,7 @@ resource "aws_security_group" "My_Monday_Task" {
   description = "Allow HTTP, HTTPS, and SSH traffic"
 }
 
-resource "aws_security_group_rule" "http_ingress1" {
+resource "aws_security_group_rule" "http_ingress2" {
   type              = "ingress"
   from_port         = 80
   to_port           = 80
@@ -66,7 +32,7 @@ resource "aws_security_group_rule" "http_ingress1" {
   security_group_id = aws_security_group.My_Monday_Task.id
 }
 
-resource "aws_security_group_rule" "https_ingress1" {
+resource "aws_security_group_rule" "https_ingress2" {
   type              = "ingress"
   from_port         = 443
   to_port           = 443
@@ -75,7 +41,7 @@ resource "aws_security_group_rule" "https_ingress1" {
   security_group_id = aws_security_group.My_Monday_Task.id
 }
 
-resource "aws_security_group_rule" "ssh_ingress1" {
+resource "aws_security_group_rule" "ssh_ingress2" {
   type              = "ingress"
   from_port         = 22
   to_port           = 22
@@ -84,7 +50,7 @@ resource "aws_security_group_rule" "ssh_ingress1" {
   security_group_id = aws_security_group.My_Monday_Task.id
 }
 
-resource "aws_security_group_rule" "all_egress1" {
+resource "aws_security_group_rule" "all_egress2" {
   type              = "egress"
   from_port         = 0
   to_port           = 0
