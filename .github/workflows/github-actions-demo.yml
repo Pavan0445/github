@@ -36,7 +36,7 @@ jobs:
         run: echo "::set-output name=ec2_public_ip::$(terraform output -json ec2_public_ip | jq -r .)"
 
       - name: Fetch EC2 public IP
-        id: fetch-ec2-ip
+        id: fetch-ec2-ip1
         run: |
           ec2_public_ip=$(terraform output -json ec2_public_ip)
           echo "EC2 Public IP: $ec2_public_ip"
