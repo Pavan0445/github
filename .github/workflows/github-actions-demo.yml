@@ -25,17 +25,10 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
-      
-
-      
-
       - name: SSH into EC2
         run: |
-          
-          
-
           # SSH into your EC2 instance
-          ssh -i "taskformonday.pem" ec2-3-81-142-14.compute-1.amazonaws.com << 'ENDSSH'
+          ssh -o StrictHostKeyChecking=no -i "taskformonday.pem" ec2-user@ec2-3-81-142-14.compute-1.amazonaws.com << 'ENDSSH'
             # Your script commands here
             # For example, you can add your script content here
             # Switch to the root user
@@ -66,10 +59,9 @@ jobs:
 
             # Change to the XAMPP htdocs directory
             cd /opt/lampp/htdocs
+          ENDSSH
 
       - name: Copy files to EC2
         run: |
-          scp -i ${{ secrets.YOUR_PEM_KEY_SECRET }} -r ./* $ec2_user@$ec2_ip:/opt/lampp/htdocs
+          scp -o StrictHostKeyChecking=no -i ${{ secrets.YOUR_PEM_KEY_SECRET }} -r ./* ec2-user@ec2-3-81-142-14.compute-1.amazonaws.com:/opt/lampp/htdocs
 
-            # Additional commands
-          ENDSSH
