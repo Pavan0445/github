@@ -6,7 +6,7 @@ provider "aws" {
 resource "aws_instance" "web_server" {
   ami           = "ami-0fc5d935ebf8bc3bc"  # Update with your desired AMI
   instance_type = "t2.micro"  # Update with your desired instance type
-  key_name      = "taskformonday.pem"
+  key_name      = "taskformonday"
   vpc_security_group_ids = [
     aws_security_group.My_Monday_Task.id,
     # Add more security group IDs if needed
