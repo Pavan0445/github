@@ -31,6 +31,31 @@ jobs:
       - name: Deploy EC2 instance
         run: terraform apply -auto-approve
 
+        - name: Fetch EC2 public IP
+        id: fetch-ec2-ip
+        run: |
+          ec2_public_ip=$(terraform output -json ec2_public_ip | jq -r .)
+          echo "EC2 Public IP: $ec2_public_ip"
+          echo "::set-output name=ec2_public_ip::$ec2_public_ip"
+
+      - name: SSH into EC2
+        run: |
+          ec2_user="ec2-user"
+          ec2_ip=${{ steps.fetch-ec2-ip.outputs.ec2_public_ip }}
+          key_path=$HOME/.ssh/your-private-key.pem
+
+          # Copy your private key
+          echo "${{ secrets.YOUR_PRIVATE_KEY }}" > $key_path
+          chmod 600 $key_path
+
+          # SSH into your EC2 instance
+          ssh -i $key_path $ec2_user@$ec2_ip 'bash -s' << 'ENDSSH'
+            # Your script commands here
+            # For example, you can add your script content here
+            echo "Hello from the EC2 instance"
+            # Additional commands
+          ENDSSH
+
       - name: Run script on EC2
         run: |
           ssh -i ${{ secrets.YOUR_PEM_KEY_SECRET }} ec2-user@your-ec2-instance-ip 'bash -s' << 'ENDSSH'
